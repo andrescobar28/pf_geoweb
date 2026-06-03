@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="theme-color" content="#1f5d4c" />
+  <title>GEOPOTAMO · HIPOADMIN</title>
+  <meta name="description" content="Panel de administración — Valida reportes y gestiona cuentas." />
+
+  <!-- ── Fuentes ──────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://unpkg.com" />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- ── Tailwind ──────────────────────────────────── -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ── Leaflet ──────────────────────────────────── -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+  <!-- ── Estilos globales compartidos ─────────────── -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="grain">
+  <div id="root"></div>
+
+  <!-- ── 1. Supabase ──────────────────────────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+
+  <!-- ── 2. React + Babel ─────────────────────────── -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+          integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+          crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+          integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+          crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+          integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+          crossorigin="anonymous"></script>
+
+  <!-- ── 3. Librerías de mapas y análisis ──────────── -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+          crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
+
+  <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.17.0/dist/leaflet-geoman.min.js" defer></script>
+  <script src="https://unpkg.com/@turf/turf@7.1.0/turf.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+
+  <!-- ── 4. MVP: credenciales + config + modelos + presenter ── -->
+  <script>window.GEOPOTAMO_CONFIG = { SUPABASE_URL: null, SUPABASE_ANON_KEY: null };</script>
+  <script src="js/env.js"       onerror="console.warn('[GP] js/env.js no encontrado — modo demo')"></script>
+  <script src="js/config.js"></script>
+  <script src="js/models.js"></script>
+  <script src="js/presenter.js"></script>
+
+  <!-- ── 5. Módulos React compartidos ─────────────── -->
+  <script type="text/babel" data-presets="env,react" src="src/divipola.jsx"></script>
+  <script type="text/babel" data-presets="env,react" src="src/data.jsx"></script>
+  <script type="text/babel" data-presets="env,react" src="src/geo.jsx"></script>
+  <script type="text/babel" data-presets="env,react" src="src/ui.jsx"></script>
+  <script type="text/babel" data-presets="env,react" src="src/maps.jsx"></script>
+  <script type="text/babel" data-presets="env,react" src="src/charts.jsx"></script>
+  <script type="text/babel" data-presets="env,react" src="src/projection.jsx"></script>
+
+  <!-- ── 6. viewer.jsx: define window.GPShared y window.GPViewer ── -->
+  <script type="text/babel" data-presets="env,react" src="src/viewer.jsx"></script>
+
+  <!-- ── 7. reporter.jsx: define window.GPReporter + window.GPReporterFlow ── -->
+  <script type="text/babel" data-presets="env,react" src="src/reporter.jsx"></script>
+
+  <!-- ── 8. Vista: Admin ──────────────────────────── -->
+  <script type="text/babel" data-presets="env,react" src="src/admin.jsx"></script>
+
+  <!-- ── 9. Punto de entrada (con guard de rol admin) ── -->
+  <script type="text/babel" data-presets="env,react">
+    (async function mountAdmin() {
+      const { ToastProvider } = window.GPUI;
+
+      function LoadingScreen() {
+        return (
+          <div className="min-h-screen grid place-items-center">
+            <div className="mono uppercase tracking-[.25em] text-[11px] opacity-65">
+              Verificando acceso…
+            </div>
+          </div>
+        );
+      }
+
+      function Guard() {
+        const [user, setUser] = React.useState(null);
+        const [ready, setReady] = React.useState(false);
+
+        React.useEffect(() => {
+          window.GP.currentUser().then(u => {
+            if (!u) {
+              /* Sin sesión → login */
+              window.location.replace("login.html");
+              return;
+            }
+            if (u.rol !== "admin") {
+              /* Autenticado pero no admin → reporter */
+              window.location.replace("reporter.html");
+              return;
+            }
+            setUser(u);
+            setReady(true);
+          });
+        }, []);
+
+        if (!ready) return <LoadingScreen />;
+
+        async function signOut() {
+          try { await window.GP.signOut(); } catch {}
+          window.location.replace("login.html");
+        }
+
+        return (
+          <ToastProvider>
+            <window.GPAdmin user={user} onSignOut={signOut} />
+          </ToastProvider>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<Guard />);
+    })();
+  </script>
+</body>
+</html>

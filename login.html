@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="theme-color" content="#1f5d4c" />
+  <title>GEOPOTAMO · Acceso</title>
+  <meta name="description" content="Inicia sesión en GEOPOTAMO — Plataforma de monitoreo de hipopótamos." />
+
+  <!-- ── Fuentes ──────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- ── Tailwind (utilidades en JSX) ─────────────── -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ── Estilos globales compartidos ─────────────── -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles-premium.css" />
+</head>
+
+<body class="grain login-page" style="background:#08161a">
+  <div id="root"></div>
+
+  <!-- ── 1. Supabase ──────────────────────────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+
+  <!-- ── 2. React + Babel ─────────────────────────── -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+          integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+          crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+          integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+          crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+          integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+          crossorigin="anonymous"></script>
+
+  <!-- ── 3. MVP: credenciales + config + modelos + presenter ── -->
+  <script>window.GEOPOTAMO_CONFIG = { SUPABASE_URL: null, SUPABASE_ANON_KEY: null };</script>
+  <script src="js/env.js"       onerror="console.warn('[GP] js/env.js no encontrado — modo demo')"></script>
+  <script src="js/config.js"></script>
+  <script src="js/models.js"></script>
+  <script src="js/presenter.js"></script>
+
+  <!-- ── 4. Módulos React compartidos ─────────────── -->
+  <script type="text/babel" data-presets="env,react" src="src/divipola.jsx"></script>
+  <script type="text/babel" data-presets="env,react" src="src/data.jsx"></script>
+  <script type="text/babel" data-presets="env,react" src="src/geo.jsx"></script>
+  <script type="text/babel" data-presets="env,react" src="src/ui.jsx"></script>
+
+  <!-- ── 5. Vista: Login ──────────────────────────── -->
+  <script type="text/babel" data-presets="env,react" src="src/login.jsx"></script>
+
+  <!-- ── 6. Punto de entrada (View → Presenter → Model) ── -->
+  <script type="text/babel" data-presets="env,react">
+    (async function mountLogin() {
+      const { ToastProvider } = window.GPUI;
+
+      /* Guard: si ya hay sesión activa, redirigir al dashboard */
+      const user = await window.GP.currentUser();
+      if (user) {
+        window.location.replace(user.rol === "admin" ? "admin.html" : "reporter.html");
+        return;
+      }
+
+      /* Callbacks de navegación (Presenter → View) */
+      function onAuth(u) {
+        window.location.replace(u.rol === "admin" ? "admin.html" : "reporter.html");
+      }
+      function onViewer() {
+        window.location.replace("viewer.html");
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        <ToastProvider>
+          <window.GPLogin onAuth={onAuth} onViewer={onViewer} />
+        </ToastProvider>
+      );
+    })();
+  </script>
+</body>
+</html>

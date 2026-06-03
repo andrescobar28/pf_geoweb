@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1f5d4c" />
+  <title>GEOPOTAMO</title>
+
+  <!-- ── Estilos mínimos para la pantalla de carga ── -->
+  <style>
+    body { margin: 0; background: #0e2620; display: flex; align-items: center; justify-content: center; min-height: 100dvh; font-family: system-ui, sans-serif; }
+    .loader { color: rgba(244,239,228,0.7); font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; }
+  </style>
+</head>
+
+<body>
+  <div class="loader">Cargando GEOPOTAMO…</div>
+
+  <!-- ── Supabase (para verificar sesión) ─────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+
+  <!-- ── MVP: credenciales + config ──────────────── -->
+  <script>window.GEOPOTAMO_CONFIG = { SUPABASE_URL: null, SUPABASE_ANON_KEY: null };</script>
+  <script src="js/env.js" onerror="void 0"></script>
+  <script src="js/config.js"></script>
+
+  <!-- ── Redirect inteligente ─────────────────────────────────────
+       · Si hay sesión activa  → dashboard según rol
+       · Si no hay sesión      → visor público (viewer.html)
+       La lógica de sesión real está en data.jsx.
+       Aquí usamos Supabase directamente para no cargar todo el app.
+  ────────────────────────────────────────────────────────────────── -->
+  <script>
+    (async function redirect() {
+      try {
+        const cfg = window.GEOPOTAMO_CONFIG || {};
+        if (cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY && window.supabase) {
+          const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+          const { data: { session } } = await sb.auth.getSession();
+          if (session) {
+            const { data: prof } = await sb
+              .from("perfiles")
+              .select("rol, estado_cuenta, activo")
+              .eq("id", session.user.id)
+              .single();
+            if (prof && prof.estado_cuenta === "aprobado" && prof.activo !== false) {
+              window.location.replace(prof.rol === "admin" ? "admin.html" : "reporter.html");
+              return;
+            }
+          }
+        } else {
+          /* Modo mock: leer sesión de localStorage */
+          const raw = localStorage.getItem("gp.session");
+          if (raw) {
+            const s = JSON.parse(raw);
+            if (s?.user) {
+              window.location.replace(s.user.rol === "admin" ? "admin.html" : "reporter.html");
+              return;
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("[GEOPOTAMO] Error en redirect de index:", e.message);
+      }
+      /* Sin sesión → login */
+      window.location.replace("login.html");
+    })();
+  </script>
+</body>
+</html>
