@@ -183,14 +183,12 @@ Para forzar modo mock en cualquier momento, vaciar las credenciales en `js/env.j
 
 ---
 
----
-
 ## Autores
 
 | Nombre | Rol | Contacto |
 |--------|-----|----------|
-| Andrés Julián Escobar Cardona | Arquitectura del sistema, desarrollo full-stack, diseño geoespacial y modelado de datos | [LinkedIn](https://www.linkedin.com/in/ajulescobar/) |
-| Sara Camila Varela | Conceptualización del dominio, diseño de experiencia de usuario y validación funcional | [LinkedIn](https://www.linkedin.com/in/saracamilavarela/) |
+| Andrés Julián Escobar Cardona | Arquitectura, desarrollo full-stack y modelado de datos | [LinkedIn](https://www.linkedin.com/in/ajulescobar/) |
+| Sara Camila Varela | Desarrollo frontend, integración de servicios WMS y cartografía | [LinkedIn](https://www.linkedin.com/in/saracamilavarela/) |
 
 Proyecto desarrollado en el marco de la **Especialización en Geomática**,  
 Escuela de Ingeniería de Recursos Naturales y del Ambiente (EIDENAR),  
