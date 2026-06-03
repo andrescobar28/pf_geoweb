@@ -188,7 +188,7 @@ Para forzar modo mock en cualquier momento, vaciar las credenciales en `js/env.j
 | Nombre | Rol | Contacto |
 |--------|-----|----------|
 | Andrés Julián Escobar Cardona | Arquitectura del sistema y desarrollo full-stack | [LinkedIn](https://www.linkedin.com/in/ajulescobar/) |
-| Sara Camila Varela | Desarrollo frontend, integración de servicios WMS/WMS y modelo de dastos | [LinkedIn](https://www.linkedin.com/in/saracamilavarela/) |
+| Sara Camila Varela | Desarrollo frontend, integración de servicios WMS/WMS y modelo de datos | [LinkedIn](https://www.linkedin.com/in/saracamilavarela/) |
 
 <sub>Proyecto desarrollado en el marco de la **Especialización en Geomática**, Escuela de Ingeniería Civil y Geomática (EICG), Facultad de Ingeniería, **Universidad del Valle** — Cali, Colombia, 2025.</sub>
 
