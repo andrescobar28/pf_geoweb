@@ -189,11 +189,11 @@ Para forzar modo mock en cualquier momento, vaciar las credenciales en `js/env.j
 
 | Nombre | Rol | Contacto |
 |--------|-----|----------|
-| Andrés Julián Escobar Cardona | Desarrollo, diseño geoespacial | [LinkedIn](https://linkedin.com/in/tu-perfil) |
-| [Nombre compañero/director si aplica] | [Rol] | — |
+| Andrés Julián Escobar Cardona | Desarrollo, diseño geoespacial | [LinkedIn](https://www.linkedin.com/in/ajulescobar/) |
+| Sara Camila Varela | [Rol] | [LinkedIn](https://www.linkedin.com/in/saracamilavarela/) |
 
 Proyecto desarrollado en el marco de la **Especialización en Geomática**,
-Escuela de Ingeniería de Recursos Naturales y del Ambiente (EIDENAR),
+Escuela de Ingeniería Civil y Geomática (EICG),
 **Universidad del Valle** — Cali, Colombia, 2025.
 
 ---
