@@ -183,6 +183,30 @@ Para forzar modo mock en cualquier momento, vaciar las credenciales en `js/env.j
 
 ---
 
+---
+
+## Autores
+
+| Nombre | Rol | Contacto |
+|--------|-----|----------|
+| Andrés Julián Escobar Cardona | Desarrollo, diseño geoespacial | [LinkedIn](https://linkedin.com/in/tu-perfil) |
+| [Nombre compañero/director si aplica] | [Rol] | — |
+
+Proyecto desarrollado en el marco de la **Especialización en Geomática**,
+Escuela de Ingeniería de Recursos Naturales y del Ambiente (EIDENAR),
+**Universidad del Valle** — Cali, Colombia, 2025.
+
+---
+
+---
+
 ## Licencia
 
-Proyecto académico — Universidad del Valle, Especialización en Geomática, 2025.
+[![CC BY-NC-SA 4.0](https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+Este trabajo está licenciado bajo
+[Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+Eres libre de compartir y adaptar el material siempre que des
+**crédito apropiado**, no lo uses con **fines comerciales** y
+distribuyas las contribuciones bajo la **misma licencia**.
